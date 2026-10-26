@@ -1,0 +1,6 @@
+pyyaml
+requests
+pymupdf
+numpy
+scikit-learn
+pydantic>=2

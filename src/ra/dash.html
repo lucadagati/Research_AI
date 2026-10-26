@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f5bea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Research AI</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2128;--mut:#667085;--line:#e3e6ea;--acc:#2f5bea;--ok:#1a7f4b;--warn:#b45309;--bad:#b42318}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1317;--card:#171c22;--ink:#e6e9ee;--mut:#98a2b3;--line:#2a313a;--acc:#7c9cff;--ok:#4cc38a;--warn:#f0a35a;--bad:#ff7b72}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+header h1{font-size:17px;margin:0}header span{color:var(--mut);font-size:13px}
+main{display:grid;grid-template-columns:340px 1fr;gap:16px;padding:16px;max-width:1400px;margin:0 auto}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin:0 0 10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px;grid-column:1/-1}
+.stat b{display:block;font-size:22px}.stat small{color:var(--mut)}
+label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+textarea,input,select{width:100%;padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:110px;resize:vertical}
+button{background:var(--acc);color:#fff;border:0;border-radius:7px;padding:9px 14px;font:inherit;cursor:pointer;margin-top:10px}
+button:disabled{opacity:.5}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.chk{display:flex;gap:6px;align-items:center;margin-top:8px;font-size:13px}.chk input{width:auto}
+.run{padding:9px 10px;border:1px solid var(--line);border-radius:8px;margin-top:8px;cursor:pointer}
+.run:hover,.run.sel{border-color:var(--acc)}
+.run small{color:var(--mut);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{font-size:11px;padding:1px 8px;border-radius:99px;border:1px solid currentColor}
+.completato{color:var(--ok)}.in-corso{color:var(--warn)}.in-coda{color:var(--mut)}.fallito,.interrotto{color:var(--bad)}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:12px;flex-wrap:wrap}
+.tab{padding:7px 12px;cursor:pointer;color:var(--mut);border-bottom:2px solid transparent}
+.tab.on{color:var(--ink);border-color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:13px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.report{overflow-wrap:anywhere}.report table{display:block}
+.report h1{font-size:22px}.report h2{font-size:18px;margin-top:22px}.report h3{font-size:15px}
+pre{white-space:pre-wrap;background:var(--bg);padding:10px;border-radius:8px;font-size:12px;max-height:260px;overflow:auto}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:var(--acc)}
+.muted{color:var(--mut)}.flaw{color:var(--bad)}
+.rate select{width:auto;display:inline-block}
+.dirs{display:grid;gap:10px}
+.dir{border:1px solid var(--line);border-radius:10px;padding:12px}
+.dir h3{margin:0 0 4px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--bg);border:1px solid var(--line)}
+.chip.tot{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:600}
+.nav{display:none}
+@media(max-width:900px){
+  body{font-size:16px;padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+  header{padding:10px 12px}header span{display:none}
+  main{padding:10px;gap:12px;display:block}
+  main>*{margin-bottom:12px}
+  .stats{display:flex;overflow-x:auto;gap:8px;margin-bottom:12px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .stats .stat{flex:0 0 118px;scroll-snap-align:start;padding:8px 10px}
+  .stat b{font-size:18px}.stat small{font-size:11px;line-height:1.3;display:block}
+  .card{padding:12px}
+  textarea,input,select{font-size:16px;min-height:44px}
+  textarea{min-height:130px}
+  button{min-height:46px;width:100%;font-size:16px}
+  .row{flex-direction:column;gap:0}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;white-space:nowrap;-webkit-overflow-scrolling:touch}
+  .tab{padding:11px 14px;flex:0 0 auto}
+  .run{padding:12px}
+  .report{font-size:15px}.report h1{font-size:20px}.report h2{font-size:17px}
+  .report table{font-size:12px}
+  pre{font-size:11px}
+  .rate select{width:100%;margin-bottom:8px}
+  /* una sola vista alla volta */
+  body[data-view=idea] #runsCard,body[data-view=idea] #detail,
+  body[data-view=runs] #newCard,body[data-view=runs] #detail,
+  body[data-view=piano] #newCard,body[data-view=piano] #runsCard{display:none}
+  .nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom));gap:6px;z-index:10}
+  .nav button{flex:1;margin:0;background:transparent;color:var(--mut);border-radius:8px;min-height:48px;font-size:13px;padding:6px 4px}
+  .nav button.on{color:var(--acc);background:var(--bg);font-weight:600}
+}
+</style>
+</head>
+<body>
+<header><h1>Research AI</h1><span>idea → cosa investigare e come svolgere la ricerca · tutto locale</span></header>
+<main>
+  <div class="stats" id="stats"></div>
+  <div>
+    <div class="card" id="newCard">
+      <h2>Nuova idea</h2>
+      <label for="idea">La tua idea (poche righe bastano)</label>
+      <textarea id="idea" placeholder="Es.: voglio un LLM che sintetizza controllori per edifici e li verifica con z3 prima del deployment"></textarea>
+      <div class="row"><div><label for="venue">Venue (opzionale)</label><input id="venue" placeholder="IEEE T-ASE"></div>
+      <div><label for="weeks">Settimane</label><input id="weeks" type="number" min="1" placeholder="12"></div></div>
+      <label for="cutoff">Data di taglio (opzionale, per testare)</label><input id="cutoff" placeholder="AAAA-MM-GG">
+      <div class="chk"><input type="checkbox" id="fast" checked><label for="fast" style="margin:0">Veloce (circa 20 min; senza: circa 45–90 min)</label></div>
+      <button id="go">Avvia</button> <span id="msg" class="muted"></span>
+    </div>
+    <div class="card" id="runsCard" style="margin-top:16px"><h2>Run</h2><div id="runs"></div></div>
+  </div>
+  <div class="card" id="detail"><p class="muted">Seleziona un run o avviane uno nuovo.</p></div>
+</main>
+<nav class="nav" id="nav"><button data-v="idea">✍️<br>Idea</button><button data-v="runs">📋<br>Run</button><button data-v="piano">📄<br>Piano</button></nav>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script>
+let sel=null, tab="report", last=null, view="idea";
+function setView(v){view=v;document.body.dataset.view=v;document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));window.scrollTo(0,0)}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const api=(u,b)=>fetch(u,b?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)}:{}).then(r=>r.json());
+function md(t){try{return DOMPurify.sanitize(marked.parse(t))}catch(e){return "<pre>"+esc(t)+"</pre>"}}
+
+function stat(v,l){return `<div class="card stat"><b>${v}</b><small>${l}</small></div>`}
+function renderStats(s){
+  const e=s.eval||{}, r=s.ratings||{};
+  const f=x=>x==null?"–":x;
+  $("#stats").innerHTML=
+    stat(e.ld?Math.round(e.ld.hit_at_5*100)+"%":"–","Backtest LD ("+(e.ld?e.ld.n:0)+" casi): direzione reale nei primi 5")+
+    stat(e.retrieval?Math.round(e.retrieval.corpus_recall*100)+"%":"–","Baseline reali nel corpus")+
+    stat(f(e.ld?.citations_ok_pct??e.cutoff?.citations_ok_pct)+"%","Citazioni valide")+
+    stat(r.n?r.utilita+" / 5":"–","Utilità (tuo voto medio)")+
+    stat(r.n?r.novita+" / 5":"–","Novità (tuo voto)")+
+    stat(r.n?r.fattibilita+" / 5":"–","Fattibilità (tuo voto)")+
+    stat(r.n||0,"Voti dati");
+}
+function renderRuns(rs){
+  $("#runs").innerHTML=rs.length?rs.map(r=>`<div class="run ${r.id===sel?"sel":""}" data-id="${r.id}">
+    <span class="pill ${r.status.replace(' ','-')}">${r.status}${r.status==="in corso"&&r.stage?" · "+r.stage:""}</span> <b>${r.id}</b>
+    <small>${esc(r.idea)}</small></div>`).join(""):'<p class="muted">Nessun run.</p>';
+  document.querySelectorAll(".run").forEach(el=>el.onclick=()=>{sel=el.dataset.id;tab="report";setView("piano");load()});
+}
+function dirTable(d){
+  const ds=d.directions||[];
+  if(!ds.length)return '<p class="muted">Direzioni non ancora disponibili.</p>';
+  return '<div class="dirs">'+ds.map((x,i)=>`<div class="dir"><h3>${i+1}. ${esc(x.title)}${x.fatal_flaw?' <span class="flaw">⛔ difetto fatale</span>':""}</h3>
+    <div class="muted">${esc(x.research_question)}</div>
+    <div class="chips"><span class="chip">Novità ${x.scores.novelty}</span><span class="chip">Impatto ${x.scores.impact}</span><span class="chip">Fattib. ${x.scores.feasibility}</span><span class="chip">Rischio↓ ${x.scores.risk_low}</span><span class="chip">Profilo ${x.scores.profile_fit}</span><span class="chip tot">Totale ${x.total}</span></div>
+    ${x.critique?`<small class="muted">Revisore: ${esc(x.critique.so_what)}</small>`:""}
+    <div class="rate" style="margin-top:8px"><button class="replan" data-n="${i+1}" style="width:auto;min-height:36px;margin:0 8px 8px 0;padding:6px 10px;font-size:13px">Piano per questa direzione</button><br>Utile? <select data-dir="${i+1}"><option value="">–</option><option value="1">no</option><option value="0">forse</option><option value="2">sì</option></select></div></div>`).join("")+"</div>";
+}
+function rateForm(d){
+  const done=(d.ratings||[]).length;
+  const sel5=n=>`<select id="${n}">${[1,2,3,4,5].map(v=>`<option ${v===3?"selected":""}>${v}</option>`).join("")}</select>`;
+  return `<h2>Il tuo voto</h2><p class="muted">Valuta il piano di questo run. Vale come valutazione umana (E-D) e finisce nelle statistiche in alto.${done?` Già dati ${done} voti su questo run.`:""}</p>
+   <div class="rate"><p>Utilità ${sel5("v-u")} &nbsp; Novità ${sel5("v-n")} &nbsp; Fattibilità ${sel5("v-f")}</p>
+   <label for="v-c">Cosa non ti convince / cosa manca?</label><textarea id="v-c" placeholder="Direzioni troppo generiche? baseline sbagliate? piano troppo lungo?"></textarea>
+   <button id="v-go">Invia voto</button> <span id="v-msg" class="muted"></span></div>`;
+}
+function renderDetail(d){
+  const i=d.info;
+  let body="";
+  if(tab==="report") body=d.report?`<div class="report">${md(d.report)}</div>`:`<p class="muted">Report non ancora pronto.</p>`;
+  if(tab==="direzioni") body=dirTable(d);
+  if(tab==="qualita"){
+    const g=d.guard, n=d.novelty;
+    body=g?`<table><tr><th>Riferimenti controllati</th><td>${g.total}</td></tr><tr><th>Non validi (rimossi)</th><td>${g.invalid}</td></tr>
+      <tr><th>Citazioni testuali verificate</th><td>${g.quotes_ok}/${g.quotes}</td></tr></table>
+      ${n?`<p>Novità: <b>${esc(n.verdict)}</b> · confidenza <b>${esc(n.confidence||"n/d")}</b> · ${n.close_papers??"?"} paper molto vicini trovati.</p>`:""}
+      <p class="muted">Una novità con confidenza bassa significa: non fidarti di “nuovo”, nel corpus mancano lavori davvero vicini.</p>`:'<p class="muted">Non ancora disponibile.</p>';
+  }
+  if(tab==="voto") body=rateForm(d);
+  const running=i.status==="in corso";
+  $("#detail").innerHTML=`<h2>Run ${i.id} <span class="pill ${i.status.replace(' ','-')}">${i.status}${i.stage?" · "+i.stage:""}</span></h2>
+   <p class="muted">${esc(i.idea)}</p>
+   ${running?`<div class="bar"><i style="width:${Math.max(8,(["analisi idea","recupero","schede","novità","gap","direzioni","revisore","piano","completato"].indexOf(i.stage)+1)/9*100)}%"></i></div><pre>${esc(i.log_tail)}</pre>`:""}
+   ${!running&&i.status!=="completato"?`<p class="flaw"><b>${i.status==="fallito"?"Il run si è fermato per un errore":"Il run è stato interrotto"}</b>${i.error?": "+esc(i.error):""}</p><button id="resume">Riprendi da dove si è fermato</button> <span id="rmsg" class="muted"></span><pre>${esc(i.log_tail)}</pre>`:""}
+   <div class="tabs">${[["report","Report"],["direzioni","Direzioni"],["qualita","Qualità"],["voto","Voto"]].map(([k,l])=>`<div class="tab ${tab===k?"on":""}" data-t="${k}">${l}</div>`).join("")}</div>${body}`;
+  document.querySelectorAll(".tab").forEach(el=>el.onclick=()=>{tab=el.dataset.t;renderDetail(d)});
+  document.querySelectorAll(".replan").forEach(b=>b.onclick=async()=>{b.disabled=true; const r=await api("/api/replan",{run:i.id,direction:+b.dataset.n}); if(r.error&&!r.id){b.textContent=r.error;return}
+    sel=r.id; tab="report"; setView("runs"); await refresh(); load()});
+  const rb=$("#resume"); if(rb) rb.onclick=async()=>{rb.disabled=true; const r=await api("/api/resume",{run:i.id}); $("#rmsg").textContent=r.error||"Ripreso"; setTimeout(()=>{refresh();load()},1500)};
+  const vg=$("#v-go"); if(vg) vg.onclick=async()=>{
+    const dirs={}; document.querySelectorAll("[data-dir]").forEach(s=>{if(s.value!=="")dirs[s.dataset.dir]=+s.value});
+    const r=await api("/api/rate",{run:i.id,utilita:+$("#v-u").value,novita:+$("#v-n").value,fattibilita:+$("#v-f").value,comment:$("#v-c").value,direzioni:dirs});
+    $("#v-msg").textContent=r.ok?"Salvato, grazie.":(r.error||"errore"); refresh();
+  };
+  last=d;
+}
+async function load(){ if(!sel)return; const d=await api("/api/run/"+sel); renderDetail(d); }
+async function refresh(){
+  const r=await api("/api/runs"); renderStats(r.summary); renderRuns(r.runs);
+  const cur=r.runs.find(x=>x.id===sel);
+  if(cur&&cur.status==="in corso"&&document.activeElement.tagName!=="TEXTAREA") load();
+}
+$("#go").onclick=async()=>{
+  const b={idea:$("#idea").value,venue:$("#venue").value,weeks:$("#weeks").value,cutoff:$("#cutoff").value,fast:$("#fast").checked};
+  $("#go").disabled=true; const r=await api("/api/start",b); $("#go").disabled=false;
+  if(r.error){$("#msg").textContent=r.error;return}
+  $("#msg").textContent="Avviato: "+r.id; sel=r.id; tab="report"; setView("runs"); await refresh(); load();
+};
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+setView("idea");
+refresh(); setInterval(refresh,6000);
+</script>
+</body>
+</html>

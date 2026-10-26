@@ -1,0 +1,47 @@
+{
+ "summary": {
+  "n": 4,
+  "hit_at_5": 1.0,
+  "baseline_recall": null,
+  "corpus_recall": null,
+  "citations_ok_pct": 100.0
+ },
+ "cases": [
+  {
+   "id": "ld11",
+   "hit_at_5": 1,
+   "first_hit_rank": 4,
+   "baseline_recall": null,
+   "citations_ok_pct": 100.0,
+   "corpus_recall": null,
+   "quotes_verified": "4/6"
+  },
+  {
+   "id": "ld5",
+   "hit_at_5": 1,
+   "first_hit_rank": 1,
+   "baseline_recall": null,
+   "citations_ok_pct": 100.0,
+   "corpus_recall": null,
+   "quotes_verified": "6/6"
+  },
+  {
+   "id": "ld10",
+   "hit_at_5": 1,
+   "first_hit_rank": 5,
+   "baseline_recall": null,
+   "citations_ok_pct": 100.0,
+   "corpus_recall": null,
+   "quotes_verified": "4/6"
+  },
+  {
+   "id": "ld7",
+   "hit_at_5": 1,
+   "first_hit_rank": 2,
+   "baseline_recall": null,
+   "citations_ok_pct": 100.0,
+   "corpus_recall": null,
+   "quotes_verified": "6/6"
+  }
+ ]
+}

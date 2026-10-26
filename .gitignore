@@ -1,0 +1,7 @@
+data/
+runs/
+.env
+__pycache__/
+*.pyc
+.venv/
+.dash_auth

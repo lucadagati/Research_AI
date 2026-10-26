@@ -1,0 +1,53 @@
+# Research_AI — configurazione
+min_citations: 100          # soglia pilastri
+niche_min_citations: 50     # topic di nicchia
+from_year: 2012
+frontier_from_year: 2025    # frontiera = pubblicati da qui, in alto per cit/anno nel proprio topic
+current_year: 2026
+language: it                # lingua del report
+
+llm:
+  host: http://localhost:11434
+  reason: gpt-oss:20b       # ragionamento (novità, gap, direzioni, piano)
+  extract: mistral-small:24b  # schede full text
+  extract_fast: qwen2.5:14b   # schede da abstract e rilevanza (più veloce)
+  embed: nomic-embed-text
+  num_ctx: 16384
+  gpu_budget_frac: 0.5      # i miei modelli non superano il 50% della VRAM della GPU (condivisa)
+  min_ctx: 12288            # il tetto GPU non riduce mai il contesto sotto questo valore (prompt troncati = output sbagliato)
+  keep_alive: 3m            # scarica i modelli dopo 3 minuti di inattività
+  parallel: 2
+
+retrieval:
+  queries_per_idea: 8
+  arxiv_per_query: 25
+  s2_per_query: 30
+  pool: 120                 # candidati tenuti dopo il ranking per embedding
+  relevance_min: 2          # punteggio LLM 0-3
+  canonical_min_citations: 500   # corsia canonici: paper molto citati con rilevanza 1 (candidati baseline)
+  canonical_max: 10
+  full_cards: 10            # schede da full text (le più vicine); le altre da abstract
+  min_frontier_share: 0.3
+  min_pillar_share: 0.3
+
+scoring_weights: {novelty: 0.25, impact: 0.20, feasibility: 0.25, risk: 0.15, profile_fit: 0.15}
+
+# base locale (ra ingest): topic brevi, uno per riga; niche=true usa la soglia bassa
+topics:
+  - {q: "serverless edge computing", niche: false}
+  - {q: "WebAssembly edge", niche: true}
+  - {q: "LoRaWAN", niche: true}
+  - {q: "IoT cloud continuum", niche: false}
+  - {q: "UAV drone logistics", niche: true}
+  - {q: "markerless motion capture biomechanics", niche: true}
+  - {q: "emergent communication multi-agent", niche: false}
+  - {q: "control barrier function", niche: false}
+  - {q: "neurosymbolic LLM controller", niche: true}
+  - {q: "LLM agents tool use", niche: false}
+  - {q: "TinyML quantization edge", niche: false}
+  - {q: "smart city IoT", niche: false}
+max_per_topic: 600
+ieee_pages: 2
+
+plan:
+  auto_revise: false   # provato: la rigenerazione automatica non migliora il piano (anzi inventa dataset); il controllo resta come sezione informativa

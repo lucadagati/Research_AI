@@ -1,0 +1,10 @@
+[
+ {"id":"ld11","cutoff":null,"idea":"Ho più board eterogenee (Raspberry Pi, RISC-V, Coral Edge TPU) e funzioni WebAssembly con inferenza ML: voglio capire dove conviene eseguire l'inferenza e se si può decidere a run time.",
+  "truth":{"title":"Where Should an Edge WebAssembly Function Run Its Inference?","summary":"Studio di misura su board eterogenee e rebinding a run time dell'esecutore di inferenza per funzioni WebAssembly","baselines":[]}},
+ {"id":"ld5","cutoff":null,"idea":"Voglio studiare la comunicazione emergente tra agenti quando il canale ha un budget di bit limitato, e cosa limita l'accuratezza del decoder.",
+  "truth":{"title":"Emergent Communication Under Bit Constraints: Shortcuts, Decoder Ceilings, and Relational Codes","summary":"Comunicazione emergente con vincolo di bit: scorciatoie, limiti del decoder e codici relazionali","baselines":[]}},
+ {"id":"ld10","cutoff":null,"idea":"Voglio un gemello digitale del tennis da più viste video per valutare il rischio di infortunio e confrontare tecniche di giocatori d'élite.",
+  "truth":{"title":"A High-Fidelity Multi-View Digital Twin for Injury-Risk Assessment and Technique Benchmarking in Elite Tennis","summary":"Digital twin multi-vista ad alta fedeltà per rischio infortunio e benchmark di tecnica nel tennis d'élite","baselines":[]}},
+ {"id":"ld7","cutoff":null,"idea":"Su F1TENTH e Coral Edge TPU la quantizzazione INT8 di policy RL è fragile: voglio studiare come scegliere il checkpoint giusto.",
+  "truth":{"title":"INT8 checkpoint selection for robust edge policies","summary":"Studio sulla selezione del checkpoint robusto alla quantizzazione INT8 per politiche di controllo su Coral","baselines":[]}}
+]

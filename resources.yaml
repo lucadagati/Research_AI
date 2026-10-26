@@ -1,0 +1,23 @@
+# Risorse reali dell'autore: il piano deve essere fattibile con queste (P4)
+author: Luca D'Agati (UniMe)
+hours_per_week: 20
+compute:
+  - "GPU NVIDIA L40 46GB condivisa (Ollama + training)"
+  - "Proxmox host, Python 3.10, 4 TB disco"
+boards:
+  - "coralmac: Coral Edge TPU via ssh"
+  - "rpi4: Raspberry Pi 4 con kernel RT"
+  - "vf2: VisionFive 2 (RISC-V)"
+testbeds:
+  - "LoRaWAN: ChirpStack testbed, ns-3 (utente ml)"
+  - "OpenStack/IoTronic edge-cloud (storico)"
+  - "EnergyPlus per ambienti termici simulati"
+no_access:
+  - "cluster multi-GPU, grandi budget API a pagamento, esperimenti con utenti umani senza IRB"
+profile:
+  topics: ["IoT/edge/fog computing", "serverless/FaaS/deviceless", "WebAssembly su edge", "LoRaWAN roaming",
+           "UAV e logistica con computing continuum", "digital twin e biomeccanica (tennis, mocap)",
+           "comunicazione emergente multi-agente", "CBF e shielding fail-closed", "LLM neurosimbolici con verifica z3",
+           "INT8/Coral per F1TENTH", "smart city", "LLM adattamento/memoria"]
+  venues_seen: ["IEEE T-ASE", "IEEE T-ITS", "IEEE TIFS", "Elsevier EAAI", "JSA", "IEEE Access"]
+  style: "paper con studio sperimentale riproducibile, no appendici, <=50 riferimenti"

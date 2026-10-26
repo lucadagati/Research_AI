@@ -1,0 +1,51 @@
+{
+ "summary": {
+  "n": 6,
+  "pool_recall": 0.6,
+  "corpus_recall": 0.6
+ },
+ "cases": [
+  {
+   "id": "c1-transformer",
+   "pool": 114,
+   "corpus": 69,
+   "pool_recall": 0.33,
+   "corpus_recall": 0.33
+  },
+  {
+   "id": "c2-intquant",
+   "pool": 93,
+   "corpus": 37,
+   "pool_recall": 0.67,
+   "corpus_recall": 0.67
+  },
+  {
+   "id": "c3-safe-rl-cbf",
+   "pool": 106,
+   "corpus": 28,
+   "pool_recall": 1.0,
+   "corpus_recall": 1.0
+  },
+  {
+   "id": "c4-serverless",
+   "pool": 62,
+   "corpus": 20,
+   "pool_recall": null,
+   "corpus_recall": null
+  },
+  {
+   "id": "c5-emergent-comm",
+   "pool": 56,
+   "corpus": 16,
+   "pool_recall": 0.5,
+   "corpus_recall": 0.5
+  },
+  {
+   "id": "c6-toolformer",
+   "pool": 229,
+   "corpus": 31,
+   "pool_recall": 0.5,
+   "corpus_recall": 0.5
+  }
+ ]
+}

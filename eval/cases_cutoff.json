@@ -1,0 +1,103 @@
+[
+ {
+  "id": "c1-transformer",
+  "cutoff": "2017-06-01",
+  "idea": "Vorrei un modello di traduzione automatica che non usi reti ricorrenti né convoluzioni, solo meccanismi di attenzione, per addestrare più in fretta e in parallelo.",
+  "truth": {
+   "title": "Attention Is All You Need",
+   "summary": "Transformer: architettura per sequenze basata solo su self-attention, senza ricorrenza né convoluzione, valutata su traduzione WMT EN-DE/EN-FR",
+   "baselines": [
+    "GNMT",
+    "ConvS2S",
+    "ByteNet"
+   ],
+   "baseline_titles": [
+    "Convolutional Sequence to Sequence",
+    "Neural Machine Translation in Linear Time",
+    "Google's Neural Machine Translation System"
+   ]
+  }
+ },
+ {
+  "id": "c2-intquant",
+  "cutoff": "2017-12-01",
+  "idea": "Voglio far girare reti convoluzionali su telefoni usando solo aritmetica intera, addestrandole in modo che la quantizzazione a 8 bit non faccia perdere accuratezza.",
+  "truth": {
+   "title": "Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference",
+   "summary": "Quantization-aware training con fake-quant per inferenza solo intera a 8 bit su CPU mobile, valutata su MobileNet con tradeoff latenza-accuratezza",
+   "baselines": [
+    "MobileNet float",
+    "Binary Weight Networks",
+    "XNOR-net"
+   ],
+   "baseline_titles": [
+    "XNOR-Net",
+    "MobileNets",
+    "Binarized Neural Networks"
+   ]
+  }
+ },
+ {
+  "id": "c3-safe-rl-cbf",
+  "cutoff": "2019-03-01",
+  "idea": "Voglio un agente di reinforcement learning che garantisca vincoli di sicurezza durante l'apprendimento usando funzioni barriera e un modello incerto del sistema.",
+  "truth": {
+   "title": "End-to-End Safe Reinforcement Learning through Barrier Functions for Safety-Critical Continuous Control Tasks",
+   "summary": "Controllo barrier function combinato con RL model-free e un modello dinamico appreso con processi gaussiani per garantire sicurezza durante l'addestramento",
+   "baselines": [
+    "PPO",
+    "TRPO",
+    "DDPG"
+   ],
+   "baseline_titles": [
+    "Constrained Policy Optimization",
+    "Proximal Policy Optimization",
+    "Continuous control with deep reinforcement learning"
+   ]
+  }
+ },
+ {
+  "id": "c4-serverless",
+  "cutoff": "2018-12-01",
+  "idea": "Il serverless è molto usato ma mi sembra inadatto a molte applicazioni data-intensive: vorrei analizzarne i limiti e proporre cosa servirebbe.",
+  "truth": {
+   "title": "Serverless Computing: One Step Forward, Two Steps Back",
+   "summary": "Position paper: limiti di FaaS (I/O, stato, comunicazione, hardware specializzato) e direzioni di ricerca per il serverless",
+   "baselines": [],
+   "baseline_titles": []
+  }
+ },
+ {
+  "id": "c5-emergent-comm",
+  "cutoff": "2017-03-01",
+  "idea": "Voglio far emergere un linguaggio compositivo tra agenti che cooperano in un ambiente, partendo solo da una ricompensa condivisa.",
+  "truth": {
+   "title": "Emergence of Grounded Compositional Language in Multi-Agent Populations",
+   "summary": "Agenti con ricompensa condivisa sviluppano un vocabolario discreto simbolico con struttura compositiva, usando una rete differenziabile e Gumbel-softmax",
+   "baselines": [
+    "Lazaridou et al. referential games"
+   ],
+   "baseline_titles": [
+    "Learning to Communicate with Deep Multi-Agent",
+    "Multi-agent cooperation and the emergence"
+   ]
+  }
+ },
+ {
+  "id": "c6-toolformer",
+  "cutoff": "2023-02-01",
+  "idea": "Voglio che un modello linguistico impari da solo quando e come chiamare API esterne (calcolatrice, ricerca, traduttore) senza molte annotazioni umane.",
+  "truth": {
+   "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+   "summary": "Fine-tuning auto-supervisionato in cui l'LLM inserisce chiamate API in testo e tiene quelle che riducono la perdita; valutato in zero-shot su matematica, QA e traduzione",
+   "baselines": [
+    "GPT-J",
+    "GPT-3"
+   ],
+   "baseline_titles": [
+    "Language Models are Few-Shot Learners",
+    "WebGPT"
+   ]
+  }
+ }
+]

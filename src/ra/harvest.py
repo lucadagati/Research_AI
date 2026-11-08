@@ -3,7 +3,7 @@ Tutte le richieste sono in cache su disco (data/cache) e con backoff."""
 import hashlib, json, os, re, time, urllib.parse, xml.etree.ElementTree as ET, requests
 from .config import CFG, p
 
-MAIL = "ldagati@unime.it"
+MAIL = os.environ.get("RA_MAIL", "ldagati@unime.it")   # Unpaywall/Crossref polite pool: set RA_MAIL to your address
 UA = {"User-Agent": f"Research_AI (mailto:{MAIL})"}
 NS = {"a": "http://www.w3.org/2005/Atom"}
 _last = {}

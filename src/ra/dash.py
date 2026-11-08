@@ -80,6 +80,13 @@ def detail(rid):
     d["ratings"] = [r for r in ratings() if r["run"] == rid]
     return d
 
+RID = re.compile(r"[\w.-]+")
+def _rid(x):
+    """id di run valido (niente path traversal) e cartella esistente"""
+    x = str(x)
+    if not RID.fullmatch(x) or x in (".", "..") or not os.path.isdir(p("runs", x)): raise ValueError("run inesistente")
+    return x
+
 def start(form):
     idea = form.get("idea", "").strip()
     if not idea: return {"error": "idea vuota"}
@@ -130,7 +137,7 @@ def launch(cmd, rid, mode="w"):
 def replan(form):
     """nuovo run che riusa corpus/novità/gap/direzioni del run indicato e rigenera solo il piano per la direzione N"""
     import shutil
-    src, n = form["run"], int(form["direction"]); sd = p("runs", src)
+    src, n = _rid(form["run"]), int(form["direction"]); sd = p("runs", src)
     if not os.path.exists(f"{sd}/directions.json"): return {"error": "le direzioni non sono ancora pronte"}
     rid = f"{src}-d{n}"; rd = p("runs", rid)
     if os.path.exists(rd): return {"error": f"esiste già {rid}", "id": rid}
@@ -144,8 +151,7 @@ def replan(form):
     return enqueue(cmd, rid)
 
 def resume(form):
-    rid = form["run"]; rd = p("runs", rid)
-    if not os.path.isdir(rd): return {"error": "run inesistente"}
+    rid = _rid(form["run"]); rd = p("runs", rid)
     if run_info(rid)["status"] in ("in corso", "in coda"): return {"error": "già in corso o in coda"}
     meta = {}
     try: meta = json.load(open(f"{rd}/meta.json"))
@@ -159,7 +165,7 @@ def resume(form):
     return enqueue(cmd, rid, "a")
 
 def rate(form):
-    rec = {"run": form["run"], "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "comment": form.get("comment", "")[:2000]}
+    rec = {"run": _rid(form["run"]), "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "comment": form.get("comment", "")[:2000]}
     for k in ("utilita", "novita", "fattibilita"): rec[k] = max(1, min(5, int(form[k])))
     rec["direzioni"] = form.get("direzioni", {})
     open(RATINGS, "a").write(json.dumps(rec, ensure_ascii=False) + "\n")
@@ -195,8 +201,8 @@ class H(BaseHTTPRequestHandler):
         self.send({"error": "non trovato"}, 404)
     def do_POST(self):
         if not self.authed(): return
-        n = int(self.headers.get("Content-Length", 0)); form = json.loads(self.rfile.read(n) or b"{}")
         try:
+            n = int(self.headers.get("Content-Length", 0)); form = json.loads(self.rfile.read(n) or b"{}")
             if self.path == "/api/start": return self.send(start(form))
             if self.path == "/api/rate": return self.send(rate(form))
             if self.path == "/api/resume": return self.send(resume(form))

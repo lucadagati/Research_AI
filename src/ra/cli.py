@@ -1,4 +1,4 @@
-import argparse, sys
+import argparse, os
 def main():
     ap = argparse.ArgumentParser(prog="ra"); sub = ap.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("idea"); a.add_argument("text"); a.add_argument("--cutoff"); a.add_argument("--venue")
@@ -10,7 +10,7 @@ def main():
     x = ap.parse_args()
     if x.cmd == "idea":
         from .run import run_idea
-        run_idea(open(x.text).read() if x.text.endswith(".txt") else x.text, x.cutoff, x.venue, x.weeks, x.fast, x.direction, x.run_id)
+        run_idea(open(x.text).read() if x.text.endswith(".txt") and os.path.isfile(x.text) else x.text, x.cutoff, x.venue, x.weeks, x.fast, x.direction, x.run_id)
     elif x.cmd == "ingest":
         from .ingest import ingest; ingest(x.topics, not x.no_cards)
     elif x.cmd == "eval":

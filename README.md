@@ -66,7 +66,20 @@ ollama pull gpt-oss:20b && ollama pull mistral-small:24b && ollama pull qwen2.5:
 Then edit two files:
 
 1. `resources.yaml`: **your** hardware, testbeds, weekly hours and research profile (the plan must be feasible with these).
-2. `harvest.py` (`MAIL`): set your e-mail, which Unpaywall requires as a polite-pool identifier (no sign-up).
+2. Your e-mail for the Unpaywall/Crossref polite pool (an identifier, no sign-up, no API key):
+   `export RA_MAIL=you@example.org` (default in `src/ra/harvest.py` is the author's address; please set yours).
+
+Check that Ollama is reachable (`curl http://localhost:11434/api/tags`) and that `llm.host` in `config.yaml` matches it.
+No API keys or accounts are needed anywhere: LLMs are local Ollama models, papers come from open endpoints.
+
+### Verify the install (offline, no Ollama, no network)
+
+```bash
+PYTHONPATH=src .venv/bin/python -m unittest discover -s tests
+```
+
+10 tests cover the citation guard, JSON retry logic, GPU-budget unload choice, dashboard run-id validation and CLI input
+handling, all with mocks. They pass in the development environment (Python 3.10). There is no linter configured.
 
 ## Usage
 
@@ -134,6 +147,25 @@ Snapshot (local runs, October 2026, `--fast`):
 The judge is an LLM, the sample is tiny, and the author's own papers are a biased test: treat these as sanity checks, not
 benchmarks. The honest test is your own judgement on real ideas, which the dashboard's voting is meant to collect.
 
+## Troubleshooting
+
+| Symptom | Cause / fix |
+|---|---|
+| `./ra: .venv/bin/python: No such file` | The launcher expects the venv at `.venv/`; create it as in Install, or run `PYTHONPATH=src python -m ra ...` |
+| Connection refused on `localhost:11434` | Ollama not running or another host: start `ollama serve` or fix `llm.host` |
+| `model not found` | `ollama pull` the models named under `llm:` in `config.yaml`, or change them to smaller ones |
+| `[ctx] prompt probabilmente TRONCATO` | Context too small for the prompt; raise `llm.num_ctx` (counted in `guard.json` as `ctx_truncations`) |
+| `[gpu] scarico ...` messages | Normal: the tool unloads its own models to stay under `gpu_budget_frac` |
+| arXiv / Semantic Scholar 429 | Rate limits; run one process at a time, retrieval continues with the other sources |
+| Dashboard exits with "Credenziali mancanti" | Create `.dash_auth` (`user:password`) or set `RA_DASH_USER` / `RA_DASH_PASS` |
+| Run interrupted | Relaunch with the same `--run-id` (or use Resume in the dashboard) |
+
+## Verification status
+
+Verified in this environment: unit tests, CLI argument parsing, byte-compilation. **Not verified** in this environment
+(no LLM runs were started, to keep the shared GPU free): end-to-end `./ra idea`, `ra ingest`, `ra eval`, the dashboard UI
+and the numbers in the Evaluation snapshot, which are the stored results in `eval/results_*.json` from earlier local runs.
+
 ## Known limitations
 
 - Semantic Scholar anonymous search often answers 429; it is tried and then skipped by a circuit breaker, so arXiv and Crossref carry most of the retrieval.
@@ -156,6 +188,7 @@ benchmarks. The honest test is your own judgement on real ideas, which the dashb
 ├── requirements.txt
 ├── src/ra/            # pipeline, LLM wrapper, cite guard, dashboard
 ├── eval/              # test cases and results
+├── tests/             # offline unit tests (mocks only)
 └── examples/          # a real generated report
 ```
 
